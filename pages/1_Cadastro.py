@@ -1,5 +1,6 @@
 import streamlit as st
 import database
+import os
 
 st.title("🔒 Cadastro de Usuário (Apenas para Administradores)")
 
@@ -7,7 +8,7 @@ st.title("🔒 Cadastro de Usuário (Apenas para Administradores)")
 if "admin_logged_in" not in st.session_state:
     st.session_state["admin_logged_in"] = False
 
-admin_password = "admin123"
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
 
 # Formulário de login do administrador
 if not st.session_state["admin_logged_in"]:
