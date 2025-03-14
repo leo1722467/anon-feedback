@@ -14,7 +14,7 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
 if not st.session_state["admin_logged_in"]:
     admin_input = st.text_input("Digite a senha do Administrador", type="password")
     if st.button("Entrar como Admin"):
-        if admin_input == admin_password:
+        if admin_input == ADMIN_PASSWORD:
             st.session_state["admin_logged_in"] = True
             st.success("Acesso concedido! Você pode cadastrar novos usuários.")
             st.rerun()
