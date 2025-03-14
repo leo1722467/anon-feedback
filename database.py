@@ -3,7 +3,8 @@ import os
 import bcrypt
 
 # Caminho do banco de dados
-DB_PATH = os.path.join(os.path.dirname(__file__), "feedbacks.db")
+DB_PATH = os.path.join(os.getcwd(), "feedbacks.db")
+
 
 # Função para conectar ao banco
 def get_connection():
