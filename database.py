@@ -87,5 +87,20 @@ def get_feedbacks():
     conn.close()
     return feedbacks
 
+def check_duplicate_feedback(user_hash, feedback_text):
+    """Verifica se um feedback idêntico já foi enviado pelo usuário."""
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM feedbacks WHERE user_hash = ? AND feedback = ?",
+        (user_hash, feedback_text),
+    )
+    result = cursor.fetchone()[0]
+
+    conn.close()
+    return result > 0  # Retorna True se o feedback já existir
+
 # Inicializar o banco de dados ao importar este arquivo
 init_db()
+
