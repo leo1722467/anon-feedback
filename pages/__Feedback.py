@@ -1,5 +1,5 @@
 import streamlit as st
-import database
+import firebase
 import hashlib
 
 st.title("💬 Enviar Feedback Anônimo")
@@ -14,8 +14,8 @@ else:
     if st.button("Enviar"):
         if feedback_text:
             # Verificar se já existe um feedback idêntico no banco
-            if database.check_duplicate_feedback(user_hash, feedback_text):
+            if firebase.check_duplicate_feedback(user_hash, feedback_text):
                 st.warning("❗ Você já enviou esse mesmo feedback recentemente!")
             else:
-                database.save_feedback(user_hash, feedback_text)
+                firebase.save_feedback(user_hash, feedback_text)
                 st.success("✅ Feedback enviado com sucesso!")

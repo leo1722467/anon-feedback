@@ -1,6 +1,5 @@
 import streamlit as st
-import database
-import os
+import firebase
 
 st.title("🔒 Cadastro de Usuário (Apenas para Administradores)")
 
@@ -8,7 +7,7 @@ st.title("🔒 Cadastro de Usuário (Apenas para Administradores)")
 if "admin_logged_in" not in st.session_state:
     st.session_state["admin_logged_in"] = False
 
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
+ADMIN_PASSWORD = st.secrets["ADMIN_PASSWORD"]
 
 # Formulário de login do administrador
 if not st.session_state["admin_logged_in"]:
@@ -28,7 +27,7 @@ if st.session_state["admin_logged_in"]:
 
     if st.button("Cadastrar Usuário"):
         if username and password:
-            success = database.add_user(username, password)
+            success = firebase.add_user(username, password)
             if success:
                 st.success("Usuário cadastrado com sucesso!")
             else:
