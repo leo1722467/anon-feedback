@@ -2,18 +2,20 @@ import streamlit as st
 import firebase
 import hashlib
 
-st.title("💬 Enviar Feedback Anônimo")
+def show_feedback_page():
+    # A linha abaixo é removida ou comentada
+    # st.set_page_config(page_title="💬 Enviar Feedback Anônimo", page_icon="🔒", layout="wide")
 
-if "user" not in st.session_state:
-    st.error("Você precisa estar logado para enviar feedbacks!")
-else:
+    if "user" not in st.session_state:
+        st.error("Você precisa estar logado para enviar feedbacks!")
+        return
+
     user_hash = hashlib.sha256(st.session_state["user"].encode()).hexdigest()
     
     feedback_text = st.text_area("Digite seu feedback:")
-
+    
     if st.button("Enviar"):
         if feedback_text:
-            # Verificar se já existe um feedback idêntico no banco
             if firebase.check_duplicate_feedback(user_hash, feedback_text):
                 st.warning("❗ Você já enviou esse mesmo feedback recentemente!")
             else:

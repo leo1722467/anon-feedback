@@ -30,3 +30,27 @@ import time
 feedbacks = firebase.get_feedbacks()
 for fb in feedbacks:
     print(fb)
+
+
+import pandas as pd
+import streamlit as st
+
+# Suponha que 'feedbacks' seja a lista de dicionários que você mostrou no exemplo
+feedbacks = firebase.get_feedbacks()
+
+# Verificar se feedbacks não está vazio
+if feedbacks:
+    # Preparar os dados para o DataFrame
+    data = {
+        "Feedback": [fb['feedback'] for fb in feedbacks],
+        "Timestamp": [fb['timestamp'] for fb in feedbacks],
+        "User Hash": [fb['user_hash'] for fb in feedbacks]
+    }
+
+    # Criar o DataFrame
+    df = pd.DataFrame(data)
+
+    # Exibir o DataFrame no Streamlit
+    st.dataframe(df)
+else:
+    st.error("Nenhum feedback encontrado!")

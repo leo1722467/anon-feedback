@@ -1,11 +1,12 @@
 from firebase_config import db
 import bcrypt
 from firebase_admin import firestore
+import hashlib
 
-
-# Criar um novo usuário no Firestore
 def add_user(username, password):
-    users_ref = db.collection("users").document(username)
+    # Criar um hash SHA-256 do nome de usuário
+    username_hash = hashlib.sha256(username.encode()).hexdigest()
+    users_ref = db.collection("users").document(username_hash)
 
     # Verifica se o usuário já existe
     if users_ref.get().exists:
@@ -18,9 +19,9 @@ def add_user(username, password):
     users_ref.set({"password": hashed_password})
     return True
 
-# Verificar login do usuário
 def check_login(username, password):
-    users_ref = db.collection("users").document(username)
+    username_hash = hashlib.sha256(username.encode()).hexdigest()
+    users_ref = db.collection("users").document(username_hash)
     user_doc = users_ref.get()
 
     if not user_doc.exists:
@@ -32,6 +33,7 @@ def check_login(username, password):
     if bcrypt.checkpw(password.encode(), stored_password.encode()):
         return True
     return False
+
 
 # Salvar feedback no Firestore
 def save_feedback(user_hash, feedback_text):
